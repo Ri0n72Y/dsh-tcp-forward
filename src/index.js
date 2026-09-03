@@ -13,8 +13,7 @@ function lanAuthorities(port) {
 export async function apply(ctx, { port = 3081 } = {}) {
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw new RangeError(`invalid TCP forward port: ${port}`)
 
-  const trustedHosts = lanAuthorities(port)
-  ctx.provide('tcpForward', { trustedHosts })
+  ctx.provide('tcpForward', { trustedHosts: lanAuthorities(port) })
 
   await ctx.effect(async () => {
     const sockets = new Set()
@@ -44,11 +43,4 @@ export async function apply(ctx, { port = 3081 } = {}) {
       for (const socket of sockets) socket.destroy()
     })
   }, 'dsh-tcp-forward')
-
-  ctx.inject(['connection'], scope => {
-    const printUrl = () => console.log(`[dsh-tcp-forward] now can access at ${scope.connection.authenticatedUrl(`http://127.0.0.1:${port}`)}`)
-    const settled = scope.get('loader')?.await()
-    if (settled === undefined) printUrl()
-    else void settled.then(printUrl, () => {})
-  })
 }
