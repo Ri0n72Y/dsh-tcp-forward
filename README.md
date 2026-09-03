@@ -8,9 +8,3 @@ dsh web
 ```
 
 Set `DSH_TCP_FORWARD_PORT` to use another port. The authenticated forward URL is printed at startup.
-
-For Cloudflare Tunnel, point the tunnel at the configured port (`http://127.0.0.1:3081` by default) and trust the public hostname when starting DSH:
-
-```sh
-dsh web --trusted-host dsh.example.com
-```
