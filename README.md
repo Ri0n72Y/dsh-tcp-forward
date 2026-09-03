@@ -7,7 +7,7 @@ dsh plugin --profile web add github:Ri0n72Y/dsh-tcp-forward
 dsh web
 ```
 
-Authenticated LAN URLs are printed at startup.
+Set `DSH_TCP_FORWARD_PORT` to use another port. The authenticated forward URL is printed at startup.
 
 For Cloudflare Tunnel, point the tunnel at `http://127.0.0.1:3081` and trust the public hostname when starting DSH:
 
