@@ -1,0 +1,17 @@
+{
+  "name": "dsh-tcp-forward",
+  "version": "0.1.0",
+  "description": "TCP forwarding for DeepSeek Harness Web",
+  "type": "module",
+  "main": "index.js",
+  "files": ["index.js", "cordis.patch.yml"],
+  "scripts": {
+    "test": "node --test"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "license": "MIT"
+}
