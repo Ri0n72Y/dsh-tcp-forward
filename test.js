@@ -32,3 +32,7 @@ test('forwards TCP to the running DSH web port', async t => {
   assert.equal(data.toString(), 'ping')
   client.destroy()
 })
+
+test('rejects invalid ports', async () => {
+  await assert.rejects(() => apply({}, { port: 0 }), /invalid TCP forward port/)
+})
