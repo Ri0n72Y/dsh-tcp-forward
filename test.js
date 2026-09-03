@@ -24,8 +24,8 @@ test('forwards TCP to the running DSH web port', async t => {
     await new Promise(resolve => upstream.close(resolve))
   })
 
-  await apply(ctx)
-  const client = connect(3081, '127.0.0.1')
+  await apply(ctx, { port: 3082 })
+  const client = connect(3082, '127.0.0.1')
   await once(client, 'connect')
   client.write('ping')
   const [data] = await once(client, 'data')
