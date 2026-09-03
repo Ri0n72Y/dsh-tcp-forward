@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "TCP forwarding for DeepSeek Harness Web",
   "type": "module",
-  "main": "index.js",
-  "files": ["index.js", "cordis.patch.yml"],
+  "main": "src/index.js",
+  "files": ["src", "cordis.patch.yml"],
   "scripts": {
     "test": "node --test"
   },
