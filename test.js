@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { once } from 'node:events'
 import { connect, createServer } from 'node:net'
 import test from 'node:test'
-import { apply } from './index.js'
+import { apply } from './src/index.js'
 
 test('forwards TCP to the running DSH web port', async t => {
   const upstream = createServer(socket => socket.pipe(socket))
