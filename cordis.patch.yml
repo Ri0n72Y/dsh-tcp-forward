@@ -1,6 +1,8 @@
 - insert:
     - id: tcp-forward
       name: dsh-tcp-forward
+      config:
+        port: !!js Number(process.env.DSH_TCP_FORWARD_PORT ?? 3081)
 
 - id: connection
   inject: [webRuntime, tcpForward]
