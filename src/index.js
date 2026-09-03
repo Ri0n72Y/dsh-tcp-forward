@@ -4,16 +4,14 @@ import { networkInterfaces } from 'node:os'
 export const name = 'dsh-tcp-forward'
 export const inject = ['webServer']
 
-const LISTEN_PORT = 3081
-
-function lanAuthorities() {
+function lanAuthorities(port) {
   return Object.values(networkInterfaces()).flat()
     .filter(address => address?.family === 'IPv4' && !address.internal)
-    .map(address => `${address.address}:${LISTEN_PORT}`)
+    .map(address => `${address.address}:${port}`)
 }
 
-export async function apply(ctx) {
-  const trustedHosts = lanAuthorities()
+export async function apply(ctx, { port = 3081 } = {}) {
+  const trustedHosts = lanAuthorities(port)
   ctx.provide('tcpForward', { trustedHosts })
 
   await ctx.effect(async () => {
@@ -32,7 +30,7 @@ export async function apply(ctx) {
 
     await new Promise((resolve, reject) => {
       server.once('error', reject)
-      server.listen(LISTEN_PORT, '0.0.0.0', () => {
+      server.listen(port, '0.0.0.0', () => {
         server.off('error', reject)
         server.on('error', console.error)
         resolve()
@@ -48,8 +46,9 @@ export async function apply(ctx) {
   }, 'dsh-tcp-forward')
 
   ctx.inject(['connection'], scope => {
-    for (const authority of trustedHosts) {
-      console.log(`dsh tcp forward: ${scope.connection.authenticatedUrl(`http://${authority}`)}`)
-    }
+    const printUrl = () => console.log(`[dsh-tcp-forward] now can access at ${scope.connection.authenticatedUrl(`http://127.0.0.1:${port}`)}`)
+    const settled = scope.get('loader')?.await()
+    if (settled === undefined) printUrl()
+    else void settled.then(printUrl, () => {})
   })
 }
