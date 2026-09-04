@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "description": "TCP forwarding for DeepSeek Harness Web",
   "type": "module",
-  "main": "src/index.js",
-  "files": ["src", "cordis.patch.yml"],
+  "main": "lib/index.js",
+  "files": ["lib/index.js", "cordis.patch.yml"],
   "scripts": {
+    "build": "node -e \"const fs=require('node:fs');fs.rmSync('lib',{recursive:true,force:true});fs.cpSync('src','lib',{recursive:true})\"",
+    "prepare": "npm run build",
     "test": "node --test"
   },
   "dsh": {
